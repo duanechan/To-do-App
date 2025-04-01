@@ -24,7 +24,7 @@ func init() {
 }
 
 func connect() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
@@ -40,7 +40,7 @@ func connect() error {
 }
 
 func Login(username, password string) (User, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	collection := mongoClient.Database("ToDo").Collection("Users")

@@ -19,7 +19,7 @@ var mongoClient *mongo.Client
 
 func init() {
 	if err := connect(); err != nil {
-		log.Fatal("Could not connect to MongoDB")
+		log.Fatal("Could not connect to MongoDB:", err)
 	}
 }
 
@@ -32,7 +32,7 @@ func connect() error {
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	err, mongoClient = client.Ping(ctx, nil), client
 

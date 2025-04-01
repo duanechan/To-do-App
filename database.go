@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -11,7 +13,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const uri string = "mongodb+srv://donny:Kc8ns5YMTrlZnofV@to-do.qj1dwji.mongodb.net/?retryWrites=true&w=majority&appName=To-do"
+const uri string = "mongodb+srv://%s:%s@to-do.qj1dwji.mongodb.net/?retryWrites=true&w=majority&appName=To-do"
 
 var mongoClient *mongo.Client
 
@@ -26,7 +28,7 @@ func connect() error {
 	defer cancel()
 
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI(fmt.Sprintf(uri, os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"))).SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {

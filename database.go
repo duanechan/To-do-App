@@ -7,13 +7,14 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/crypto/bcrypt"
 )
 
-const uri string = "mongodb+srv://%s:%s@to-do.qj1dwji.mongodb.net/?retryWrites=true&w=majority&appName=To-do"
+var uri string = "mongodb+srv://%s:%s@to-do.qj1dwji.mongodb.net/?retryWrites=true&w=majority&appName=To-do"
 
 var mongoClient *mongo.Client
 
@@ -24,11 +25,19 @@ func init() {
 }
 
 func connect() error {
+	err := godotenv.Load()
+	if err != nil {
+		return err
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI(fmt.Sprintf(uri, os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"))).SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI(fmt.Sprintf(uri, username, password)).SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {

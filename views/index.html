@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do</title>
+</head>
+<body>
+    {{ if ne .Data nil }}
+        <h1>Welcome, {{ .Data.User.Username }}!</h1>
+    {{ else }}
+        <a href="/auth/login"><span>Login</span></a>
+    {{ end }}
+
+    <form action="/auth/logout" method="post">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+</html>
